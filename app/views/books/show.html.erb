@@ -1,0 +1,54 @@
+<%=  flash[:notice]  %>
+<div class="container">
+<div class="row">
+<div class="col-xs-3">
+<h2>User info</h2>
+<div class="profile-container">
+    <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg',  fallback: "no_image.jpg" %>
+    <h3 class="profile-name">name     <%= @user.name %></h3>
+    <p>introduction     <%= @user.introduction %></p>
+	<% if @user.id == current_user.id %>
+		<%= link_to edit_user_path(@user), method: :get do %>
+        <button class="btn btn-default" aria-label="Left Align" type="button"><span class="glyphicon glyphicon glyphicon-wrench" aria-hidden="true"></span></button><% end %>
+    <% else %>
+    	<%= link_to user_path(current_user.id), method: :get do %>
+    	<button class="btn btn-default" aria-label="Left Align" type="button"><span class="glyphicon glyphicon glyphicon-wrench" aria-hidden="true"></span></button><% end %>
+    <% end %>
+</div>
+<div class="newbook">
+	<h1 class="newbook-headline">New Book</h1>
+	<%=  form_for(@books) do |f|  %>
+	    <h4>Title</h4>
+	    <%= f.text_field :title %>
+	    <h4 class="newbook-body">Opinion</h4>
+	    <%= f.text_area :body %><br>
+	    <%= f.submit 'Create book' %>
+	<% end %>
+</div>
+</div>
+<div class="col-xs-9">
+<h2>Book detail</h2>
+<table class="table table-striped">
+	<thead>
+    	<tr>
+    		<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+			<tr>
+				<td><%= attachment_image_tag @user, :profile_image, :fill, 85, 85, format: 'jpeg', fallback: "no_image.jpg" %></td>
+				<td><%=  @book.title  %></td>
+				<td><%=  @book.body  %></td>
+				<% if @book.user_id == current_user.id %>
+        			<td><%= link_to 'Edit', edit_book_path(@book) %></td>
+        			<td><%= link_to 'Destroy', @book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        		<% end %>
+			</tr>
+	</tbody>
+</table>
+<p><%= link_to @user.name, user_path(@user.id) %></p>
+</div>
+</div>
+</div>
